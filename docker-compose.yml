@@ -1,0 +1,61 @@
+version: '3.5'
+# Aunque salta que la version es vieja, funciona bien
+services:
+# La BBDD
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+# Nos es recomendable estas credenciales pero se pueden cambiar
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+# Redirección de puertos
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+# PGAdmin, similar a PHPmyAdmin
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+# Similar al caso de postgre, no es recomendable estas credenciales
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+# Redirección de puertos
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+# Creación del contenedor php-apache
+  php:
+    container_name: php_container
+# Se construye a partir del Dockerfile    
+    build:
+      context: .
+      dockerfile: Dockerfile
+# Volumen que permite trabajar con la carpeta php dentro del contenedor
+    volumes:
+      - ./php:/var/www/html
+# Redirección de puertos
+    ports:
+      - "8080:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

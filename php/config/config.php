@@ -1,5 +1,7 @@
 <?php
+# Dirección de la bbdd
 $host = '172.23.0.1';
+# Nombre de la bbdd
 $db = 'empresa';
 $user = 'admin';
 $pass = 'admin';

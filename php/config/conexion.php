@@ -1,6 +1,6 @@
 <?php
 require 'config.php';
-
+# creación de la conexión pdo
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     echo "Conexión exitosa a la base de datos";

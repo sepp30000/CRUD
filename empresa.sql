@@ -1,3 +1,5 @@
+CREATE database Empresa;
+
 -- Tabla de usuarios (técnicos)
 CREATE TABLE Usuarios (
     id SERIAL PRIMARY KEY,
@@ -38,6 +40,8 @@ CREATE TABLE Tareas (
     tecnico_id INT REFERENCES Usuarios(id)
 );
 
+
+-- Insercción de datos
 INSERT INTO Usuarios (nombre, apellido_1, apellido_2) VALUES
 ('Juan', 'Pérez', 'González'),
 ('María', 'García', 'Rodríguez'),
